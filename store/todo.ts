@@ -4,40 +4,51 @@ import todoObject from "type/todo-type";
 export const todoStore = defineStore("todoStore", {
   state: () => ({
     newTodo: { id: "", name: "", status: false } as todoObject,
-    list: [
-      { id: 1, name: "chơi bóng đá", status: false },
-      { id: 2, name: "chơi đá bóng", status: false },
-    ] as Array<todoObject>,
+    list: [] as Array<todoObject>,
   }),
 
   actions: {
-    addOrUpTodo(item: string) {
-      if (item.trim() !== "") {
-        let newData = {
-          id: Date.now(),
-          name: item,
-          status: false,
-        } as todoObject;
+    saveStorage() {
+      localStorage.setItem("todos", JSON.stringify(this.list));
+    },
+    addOrUpTodo(name: string) {
+      const isExist = this.list.findIndex((item) => item.name === name) !== -1;
 
-        if (this.newTodo.id !== "") {
-          this.list = this.list.map((todo) =>
-            todo.id === this.newTodo.id
-              ? {
-                  ...todo,
-                  name: item,
-                }
-              : todo
-          );
-        } else this.list.push(newData);
+      if (name.trim() === "") return alert("Tên task không được trống");
+
+      if (isExist) return alert("Task này đã tồn tại");
+
+      let newData = {
+        id: Date.now(),
+        name: name,
+        status: false,
+      } as todoObject;
+
+      if (this.newTodo.id !== "") {
+        this.list = this.list.map((todo) =>
+          todo.id === this.newTodo.id
+            ? {
+                ...todo,
+                name,
+              }
+            : todo
+        );
+      } else {
+        this.list.push(newData);
       }
+
       this.newTodo = { id: "", name: "", status: false };
     },
+
     removeTodo(todoId: number) {
       this.list = this.list.filter((todo) => todo.id !== todoId);
     },
+
     editTodo(item: todoObject) {
+      console.log("item:", item);
       this.newTodo = { ...item };
     },
+
     doneTodo(id: number) {
       this.list = this.list.map((todo) =>
         todo.id === id
