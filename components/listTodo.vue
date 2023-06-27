@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <h1>Todo List</h1>
-    <div class="input-wrapper">
+    <h1 class="spacing-2">Todo List</h1>
+    <div class="input-wrapper spacing-1">
       <input
         v-model="newTodo.name"
         type="text"
@@ -60,11 +60,7 @@ export default defineComponent({
   beforeMount() {
     this.initialList(this.getList());
   },
-  beforeUnmount() {
-    // Lưu dữ liệu vào storage
-    console.log("unmounted");
-    this.saveStorage();
-  },
+
   computed: {
     ...mapState(todoStore, ["list", "newTodo"]),
     // ...mapWritableState(),
@@ -72,7 +68,6 @@ export default defineComponent({
   methods: {
     ...mapActions(todoStore, [
       "initialList",
-      "saveStorage",
       "addOrUpTodo",
       "doneTodo",
       "editTodo",
@@ -101,6 +96,13 @@ body {
   font-family: Arial, sans-serif;
 }
 
+.spacing-1 {
+  margin-bottom: 10px;
+}
+.spacing-2 {
+  margin-bottom: 20px;
+}
+
 .container {
   max-width: 400px;
   margin: 0 auto;
@@ -112,7 +114,6 @@ body {
 
 h1 {
   text-align: center;
-  margin-bottom: 20px;
 }
 
 .input-wrapper {
@@ -142,7 +143,6 @@ h1 {
 }
 
 .task-list {
-  margin-top: 20px;
   list-style-type: none;
 }
 

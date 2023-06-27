@@ -39,12 +39,13 @@ export const todoStore = defineStore("todoStore", {
       } else {
         this.list.push(newData);
       }
-
+      this.saveStorage();
       this.newTodo = { id: "", name: "", status: false };
     },
 
     removeTodo(todoId: number) {
       this.list = this.list.filter((todo) => todo.id !== todoId);
+      this.saveStorage();
     },
 
     editTodo(item: todoObject) {
@@ -61,6 +62,7 @@ export const todoStore = defineStore("todoStore", {
             }
           : todo
       );
+      this.saveStorage();
     },
   },
 });
