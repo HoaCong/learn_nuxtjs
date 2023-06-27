@@ -9,4 +9,13 @@ export default defineNuxtConfig({
       ["defineStore", "definePiniaStore"], // import { defineStore as definePiniaStore } from 'pinia'
     ],
   },
+  css: [
+    "primevue/resources/themes/saga-blue/theme.css",
+    "primevue/resources/primevue.css",
+    "primeflex/primeflex.css",
+    "primeicons/primeicons.css",
+  ],
+  build: {
+    transpile: ["primevue"],
+  },
 });
