@@ -5,14 +5,16 @@
       <input
         v-model="newTodo.name"
         type="text"
-        id="task-input"
+        class="task-input"
         placeholder="Add a new task"
       />
-      <button @click="addOrUpTodo(newTodo.name)" id="add-button">Add</button>
+      <button @click="addOrUpTodo(newTodo.name)" class="add-button">
+        {{ newTodo.id !== "" ? "Edit" : "Add" }}
+      </button>
     </div>
-    <ul id="task-list">
+    <ul class="task-list">
       <li v-if="pending" class="progress"></li>
-      <li v-for="todo in list" v-bind:key="todo.id">
+      <li class="task-item" v-for="todo in list" v-bind:key="todo.id">
         <p class="name-task">
           <del v-if="todo?.status">{{ todo?.name }}</del>
           <span v-else>{{ todo?.name }}</span>
@@ -101,7 +103,7 @@ body {
 
 .container {
   max-width: 400px;
-  margin: 30px auto;
+  margin: 0 auto;
   background-color: #fff;
   border-radius: 5px;
   padding: 20px;
@@ -117,7 +119,7 @@ h1 {
   display: flex;
 }
 
-#task-input {
+.task-input {
   flex-grow: 1;
   padding: 10px;
   border: 1px solid #ddd;
@@ -125,7 +127,7 @@ h1 {
   outline: none;
 }
 
-#add-button {
+.add-button {
   padding: 10px 20px;
   background-color: #4caf50;
   color: #fff;
@@ -135,16 +137,16 @@ h1 {
   margin-left: 10px;
 }
 
-#add-button:hover {
+.add-button:hover {
   background-color: #45a049;
 }
 
-ul {
+.task-list {
   margin-top: 20px;
   list-style-type: none;
 }
 
-li {
+.task-item {
   padding: 10px;
   background-color: #f9f9f9;
   border-radius: 5px;
@@ -154,7 +156,7 @@ li {
   align-items: center;
 }
 
-li:hover {
+.task-item:hover {
   background-color: #d3d3d3;
   transition: color 0.5s ease-in-out;
 }

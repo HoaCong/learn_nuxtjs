@@ -1,3 +1,3 @@
 <template>
-  <div><List /></div>
+  <div><ListTodo /></div>
 </template>
