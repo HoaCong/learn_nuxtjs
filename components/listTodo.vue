@@ -3,27 +3,60 @@
     <h1 class="spacing-2">Todo List</h1>
     <div class="input-wrapper spacing-1">
       <input
+        v-model="keyword"
+        type="text"
+        class="task-input"
+        placeholder="Keyword"
+      />
+      <button @click="searchTodo(keyword)" class="add-button">Search</button>
+    </div>
+    <div class="input-wrapper spacing-1">
+      <input
         v-model="newTodo.name"
         type="text"
         class="task-input"
         placeholder="Add a new task"
       />
-      <button @click="addOrUpTodo(newTodo.name)" class="add-button">
+      <button @click="handleAdd()" class="add-button">
         {{ newTodo.id !== "" ? "Edit" : "Add" }}
       </button>
     </div>
+    <div v-if="pending" class="progress"></div>
+    <div v-else class="flex-spacecenter spacing-1">
+      <label class="checkbox-all">
+        <input
+          id="checkbox-all"
+          type="checkbox"
+          v-bind:checked="isCheckedAll"
+          @change="handleCheckAll($event)"
+        />
+      </label>
+      <div class="btn-actions">
+        <button class="button done-button" @click="handleDoneAll()">
+          Done
+        </button>
+        <button class="button delete-button" @click="handleRemoveAll()">
+          Remove
+        </button>
+      </div>
+    </div>
     <ul class="task-list">
-      <li v-if="pending" class="progress"></li>
-      <li class="task-item" v-for="todo in list" v-bind:key="todo.id">
-        <p class="name-task">
-          <del v-if="todo?.status">{{ todo?.name }}</del>
-          <span v-else>{{ todo?.name }}</span>
-        </p>
+      <li class="task-item" v-for="todo in listTodo" v-bind:key="todo.id">
+        <label class="name-task">
+          <input
+            v-bind:checked="listId.includes(todo.id)"
+            type="checkbox"
+            style="margin-right: 8px"
+            @change="handleCheck(todo.id)"
+          />
+          <del v-if="todo.status">{{ todo.name }}</del>
+          <span v-else>{{ todo.name }}</span>
+        </label>
         <div class="btn-actions">
           <button
             class="button done-button"
             @click="doneTodo(todo.id)"
-            :disabled="todo?.status"
+            :disabled="todo.status"
           >
             Done
           </button>
@@ -34,7 +67,7 @@
           >
             Edit
           </button>
-          <button class="button delete-button" @click="removeTodo(todo.id)">
+          <button class="button delete-button" @click="handleRemove(todo.id)">
             Remove
           </button>
         </div>
@@ -50,20 +83,27 @@ import { todoStore } from "../store";
 export default defineComponent({
   // type inference enabled
   data() {
-    return { pending: true };
+    return { pending: true, keyword: "", listSearch: [], listId: [] };
   },
   emits: {},
   props: {},
   mounted() {
     this.pending = false;
-  },
-  beforeMount() {
     this.initialList(this.getList());
   },
 
   computed: {
     ...mapState(todoStore, ["list", "newTodo"]),
-    // ...mapWritableState(),
+    listTodo() {
+      if (this.listSearch.length > 0 && Array.isArray(this.listSearch))
+        return this.listSearch;
+      else return this.list;
+    },
+    isCheckedAll() {
+      return (
+        this.listId.length === this.listTodo.length && this.listId.length > 0
+      );
+    },
   },
   methods: {
     ...mapActions(todoStore, [
@@ -72,6 +112,8 @@ export default defineComponent({
       "doneTodo",
       "editTodo",
       "removeTodo",
+      "doneAll",
+      "removeAll",
     ]),
     getList() {
       const tmpList =
@@ -79,6 +121,51 @@ export default defineComponent({
           ? getListTodo(JSON.parse(localStorage.getItem("todos")))
           : this.list;
       return tmpList;
+    },
+    searchTodo(name) {
+      const tmp = [...this.list].filter((todo) =>
+        todo.name.toLowerCase().includes(name.toLowerCase())
+      );
+      this.listSearch = tmp;
+      this.listId = [];
+    },
+    handleAdd() {
+      this.keyword = "";
+      this.listSearch = [];
+      this.addOrUpTodo(this.newTodo.name);
+    },
+    handleRemove(id) {
+      this.removeTodo(id);
+      this.listId = [...this.listId].filter((item) => item !== id);
+    },
+    handleCheckAll(event) {
+      if (event.target.checked)
+        this.listId = [...this.listTodo].map((item) => item.id);
+      else this.listId = [];
+    },
+    handleCheck(id) {
+      console.log("handleCheck  id:", id);
+      const isExist = this.listId.indexOf(id);
+      if (isExist !== -1) this.listId.splice(isExist, 1);
+      else this.listId.push(id);
+    },
+    handleDoneAll() {
+      this.doneAll(this.listId);
+      this.listSearch = this.listSearch.map((todo) =>
+        this.listId.includes(todo.id)
+          ? {
+              ...todo,
+              status: true,
+            }
+          : todo
+      );
+    },
+    handleRemoveAll() {
+      this.listSearch = this.listSearch.filter(
+        (todo) => !this.listId.includes(todo.id)
+      );
+      this.removeAll(this.listId);
+      this.listId = [];
     },
   },
 });
@@ -185,6 +272,7 @@ li:last-child {
 
 .button:disabled {
   background-color: rgb(153, 153, 153);
+  cursor: unset;
 }
 
 .button:disabled:hover {
@@ -231,5 +319,25 @@ li:last-child {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.checkbox-all {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.checkbox-all:hover {
+  background-color: #e7e5e5;
+}
+.flex-spacecenter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

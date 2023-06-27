@@ -64,5 +64,20 @@ export const todoStore = defineStore("todoStore", {
       );
       this.saveStorage();
     },
+    doneAll(tmpList: Array<number>) {
+      this.list = this.list.map((todo) =>
+        tmpList.includes(todo.id)
+          ? {
+              ...todo,
+              status: true,
+            }
+          : todo
+      );
+      this.saveStorage();
+    },
+    removeAll(tmpList: Array<number>) {
+      this.list = this.list.filter((todo) => !tmpList.includes(todo.id));
+      this.saveStorage();
+    },
   },
 });
