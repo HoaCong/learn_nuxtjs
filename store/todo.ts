@@ -49,7 +49,6 @@ export const todoStore = defineStore("todoStore", {
     },
 
     editTodo(item: todoObject) {
-      console.log("item:", item);
       this.newTodo = { ...item };
     },
 
