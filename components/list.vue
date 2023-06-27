@@ -11,7 +11,8 @@
       <button @click="addOrUpTodo(newTodo.name)" id="add-button">Add</button>
     </div>
     <ul id="task-list">
-      <li v-for="todo in getList" v-bind:key="todo.id">
+      <li v-if="pending" class="progress"></li>
+      <li v-for="todo in list" v-bind:key="todo.id">
         <p class="name-task">
           <del v-if="todo?.status">{{ todo?.name }}</del>
           <span v-else>{{ todo?.name }}</span>
@@ -42,23 +43,25 @@
 <script>
 import { defineComponent } from "vue";
 import { mapState, mapActions } from "pinia";
-import { todoStore } from "../store/todo";
+import { todoStore } from "../store";
 
 export default defineComponent({
   // type inference enabled
   data() {
-    return {};
+    return { pending: true };
   },
   emits: {},
   props: {},
-  mounted() {},
-  beforeUnmount() {
-    // Lưu dữ liệu vào storage
-    this.saveStorage();
+  mounted() {
+    this.pending = false;
   },
   beforeMount() {
+    this.initialList(this.getList());
+  },
+  beforeUnmount() {
     // Lưu dữ liệu vào storage
-    this.list = this.getList();
+    console.log("unmounted");
+    this.saveStorage();
   },
   computed: {
     ...mapState(todoStore, ["list", "newTodo"]),
@@ -66,6 +69,7 @@ export default defineComponent({
   },
   methods: {
     ...mapActions(todoStore, [
+      "initialList",
       "saveStorage",
       "addOrUpTodo",
       "doneTodo",
@@ -75,7 +79,7 @@ export default defineComponent({
     getList() {
       const tmpList =
         this.list.length === 0
-          ? JSON.parse(localStorage.getItem("todos"))
+          ? getListTodo(JSON.parse(localStorage.getItem("todos")))
           : this.list;
       return tmpList;
     },
@@ -206,5 +210,24 @@ li:last-child {
 
 .delete-button:hover {
   background-color: #d72020;
+}
+
+.progress {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid #ccc;
+  border-top-color: #888;
+  animation: spin 1s linear infinite;
+  margin: 32px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

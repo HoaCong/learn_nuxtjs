@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import todoObject from "type/todo-type";
+import { todoObject } from "../type";
 
 export const todoStore = defineStore("todoStore", {
   state: () => ({
@@ -10,6 +10,9 @@ export const todoStore = defineStore("todoStore", {
   actions: {
     saveStorage() {
       localStorage.setItem("todos", JSON.stringify(this.list));
+    },
+    initialList(tmpList: Array<todoObject>) {
+      this.list = tmpList;
     },
     addOrUpTodo(name: string) {
       const isExist = this.list.findIndex((item) => item.name === name) !== -1;

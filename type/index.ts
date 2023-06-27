@@ -1,1 +1,1 @@
-import "./todo-type";
+export * from "./todo-type";

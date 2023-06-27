@@ -1,1 +1,3 @@
-import "./todo";
+import { todoStore } from "./todo";
+
+export { todoStore };
