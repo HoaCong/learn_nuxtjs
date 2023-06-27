@@ -15,7 +15,8 @@ export const todoStore = defineStore("todoStore", {
       this.list = tmpList;
     },
     addOrUpTodo(name: string) {
-      const isExist = this.list.findIndex((item) => item.name === name) !== -1;
+      const isExist =
+        this.list.findIndex((item: todoObject) => item.name === name) !== -1;
 
       if (name.trim() === "") return alert("Tên task không được trống");
 
@@ -28,7 +29,7 @@ export const todoStore = defineStore("todoStore", {
       } as todoObject;
 
       if (this.newTodo.id !== "") {
-        this.list = this.list.map((todo) =>
+        this.list = this.list.map((todo: todoObject) =>
           todo.id === this.newTodo.id
             ? {
                 ...todo,
@@ -44,7 +45,7 @@ export const todoStore = defineStore("todoStore", {
     },
 
     removeTodo(todoId: number) {
-      this.list = this.list.filter((todo) => todo.id !== todoId);
+      this.list = this.list.filter((todo: todoObject) => todo.id !== todoId);
       this.saveStorage();
     },
 
@@ -53,7 +54,7 @@ export const todoStore = defineStore("todoStore", {
     },
 
     doneTodo(id: number) {
-      this.list = this.list.map((todo) =>
+      this.list = this.list.map((todo: todoObject) =>
         todo.id === id
           ? {
               ...todo,
@@ -64,7 +65,7 @@ export const todoStore = defineStore("todoStore", {
       this.saveStorage();
     },
     doneAll(tmpList: Array<number>) {
-      this.list = this.list.map((todo) =>
+      this.list = this.list.map((todo: todoObject) =>
         tmpList.includes(todo.id)
           ? {
               ...todo,
@@ -75,7 +76,9 @@ export const todoStore = defineStore("todoStore", {
       this.saveStorage();
     },
     removeAll(tmpList: Array<number>) {
-      this.list = this.list.filter((todo) => !tmpList.includes(todo.id));
+      this.list = this.list.filter(
+        (todo: todoObject) => !tmpList.includes(todo.id)
+      );
       this.saveStorage();
     },
   },
