@@ -222,7 +222,7 @@ h1 {
 
 .add-button {
   padding: 10px 20px;
-  background-color: #4caf50;
+  background-color: #3358de;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -231,7 +231,7 @@ h1 {
 }
 
 .add-button:hover {
-  background-color: #45a049;
+  background-color: #0656c6;
 }
 
 .task-list {
@@ -293,10 +293,10 @@ li:last-child {
 }
 
 .edit-button {
-  background-color: rgb(175, 175, 175);
+  background-color: rgb(228, 186, 0);
 }
 .edit-button:hover {
-  background-color: #959595;
+  background-color: #beb842;
 }
 
 .delete-button {
