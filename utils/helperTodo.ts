@@ -1,4 +1,4 @@
-import { todoObject } from "type";
+import { todoObject } from "types";
 
 export function getListTodo(tmpList: todoObject) {
   if (Array.isArray(tmpList)) {
