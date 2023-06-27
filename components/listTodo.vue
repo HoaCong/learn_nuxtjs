@@ -27,7 +27,7 @@
         <input
           id="checkbox-all"
           type="checkbox"
-          v-bind:checked="isCheckedAll"
+          v-model="isCheckedAll"
           @change="handleCheckAll($event)"
         />
       </label>
@@ -55,7 +55,7 @@
         <div class="btn-actions">
           <button
             class="button done-button"
-            @click="doneTodo(todo.id)"
+            @click="handleDone(todo.id)"
             :disabled="todo.status"
           >
             Done
@@ -87,22 +87,25 @@ export default defineComponent({
   },
   emits: {},
   props: {},
+
   mounted() {
+    const list =
+      this.list.length === 0
+        ? getListTodo(JSON.parse(localStorage.getItem("todos")))
+        : this.list;
+    this.initialList(list);
     this.pending = false;
-    this.initialList(this.getList());
   },
 
   computed: {
     ...mapState(todoStore, ["list", "newTodo"]),
     listTodo() {
-      if (this.listSearch.length > 0 && Array.isArray(this.listSearch))
-        return this.listSearch;
-      else return this.list;
+      return this.listSearch.length > 0 && Array.isArray(this.listSearch)
+        ? this.listSearch
+        : this.list;
     },
     isCheckedAll() {
-      return (
-        this.listId.length === this.listTodo.length && this.listId.length > 0
-      );
+      return this.listTodo.every((item) => this.listId.includes(item.id));
     },
   },
   methods: {
@@ -115,13 +118,7 @@ export default defineComponent({
       "doneAll",
       "removeAll",
     ]),
-    getList() {
-      const tmpList =
-        this.list.length === 0
-          ? getListTodo(JSON.parse(localStorage.getItem("todos")))
-          : this.list;
-      return tmpList;
-    },
+
     searchTodo(name) {
       const tmp = [...this.list].filter((todo) =>
         todo.name.toLowerCase().includes(name.toLowerCase())
@@ -136,36 +133,44 @@ export default defineComponent({
     },
     handleRemove(id) {
       this.removeTodo(id);
-      this.listId = [...this.listId].filter((item) => item !== id);
+      this.listId = this.listId.filter((item) => item !== id);
     },
     handleCheckAll(event) {
-      if (event.target.checked)
-        this.listId = [...this.listTodo].map((item) => item.id);
-      else this.listId = [];
+      this.listId = event.target.checked
+        ? this.listTodo.map((item) => item.id)
+        : [];
     },
     handleCheck(id) {
-      console.log("handleCheck  id:", id);
       const isExist = this.listId.indexOf(id);
       if (isExist !== -1) this.listId.splice(isExist, 1);
       else this.listId.push(id);
     },
     handleDoneAll() {
       this.doneAll(this.listId);
+      this.listSearch = this.listSearch.map((todo) => ({
+        ...todo,
+        status: this.listId.includes(todo.id),
+      }));
+    },
+    handleDone(id) {
       this.listSearch = this.listSearch.map((todo) =>
-        this.listId.includes(todo.id)
+        todo.id === id
           ? {
               ...todo,
               status: true,
             }
           : todo
       );
+      this.doneTodo(id);
     },
+
     handleRemoveAll() {
       this.listSearch = this.listSearch.filter(
         (todo) => !this.listId.includes(todo.id)
       );
       this.removeAll(this.listId);
       this.listId = [];
+      this.keyword = "";
     },
   },
 });
