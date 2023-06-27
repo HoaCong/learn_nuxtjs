@@ -1,21 +1,23 @@
 <template>
-  <header class="header">
-    <NuxtLink to="/" class="logo">MENT</NuxtLink>
-    <div class="header-right">
+  <Menubar>
+    <template v-slot:start>
+      <NuxtLink to="/" class="logo">MENT</NuxtLink>
+    </template>
+    <template v-slot:end>
       <NuxtLink
         to="/about"
-        class="menu"
-        v-bind:class="{ active: isLinkActive('/about') }"
+        class="text-900"
+        v-bind:class="{ 'text-blue-500': isLinkActive('/about') }"
         >About</NuxtLink
       >
       <NuxtLink
         to="/todo"
-        class="menu"
-        v-bind:class="{ active: isLinkActive('/todo') }"
+        class="text-900 ml-2"
+        v-bind:class="{ 'text-blue-500': isLinkActive('/todo') }"
         >Todo</NuxtLink
       >
-    </div>
-  </header>
+    </template>
+  </Menubar>
 </template>
 
 <script>
@@ -29,23 +31,11 @@ export default defineComponent({
 </script>
 
 <style>
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 10px;
-  height: 70px;
-  background-color: #f1f1f1;
-}
-
-.header a {
-  text-decoration: none;
-  color: #000;
-}
-
 .logo {
   font-size: 25px;
   font-weight: bold;
+  color: #000;
+  text-decoration: none;
 }
 
 .logo:hover {
