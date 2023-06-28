@@ -1,15 +1,9 @@
 <template>
-  <footer class="footer">
+  <footer class="w-full text-4xl surface-400 text-center p-3">
     <p>Footer</p>
   </footer>
 </template>
 
 <style>
-.footer {
-  width: 100%;
-  background-color: #c8c8c8;
-  color: #000;
-  text-align: center;
-  font-size: 30px;
-}
+/*  */
 </style>

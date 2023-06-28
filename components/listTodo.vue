@@ -64,7 +64,7 @@
           v-for="todo in listTodo"
           v-bind:key="todo.id"
         >
-          <label class="flex-grow-1 cursor-pointer">
+          <label class="name-task cursor-pointer">
             <input
               v-bind:checked="listId.includes(todo.id)"
               type="checkbox"
@@ -216,5 +216,12 @@ export default defineComponent({
 </script>
 
 <style>
-/*  */
+.name-task {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 188.5px);
+}
 </style>
