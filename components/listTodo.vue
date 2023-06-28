@@ -28,7 +28,14 @@
 
     <hr class="mb-3" />
     <div v-if="pending" class="text-center">
-      <ProgressSpinner class="w-5rem h-5rem" />
+      <div class="card flex justify-content-center">
+        <ProgressSpinner
+          class="w-5rem h-5rem"
+          strokeWidth="5"
+          animationDuration=".5s"
+          aria-label="ProgressSpinner"
+        />
+      </div>
     </div>
     <div v-else-if="isEmptyData || listTodo.length === 0" class="text-center">
       Không có dữ liệu

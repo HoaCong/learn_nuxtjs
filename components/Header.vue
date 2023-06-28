@@ -1,25 +1,29 @@
 <template>
-  <Menubar>
-    <template v-slot:start>
+  <header
+    class="flex justify-content-between align-items-center p-3 surface-400"
+  >
+    <div>
       <NuxtLink to="/" class="text-5xl text-900 font-bold no-underline"
         >MENT</NuxtLink
       >
-    </template>
-    <template v-slot:end>
+    </div>
+    <div>
       <NuxtLink
         to="/about"
-        class="text-900 hover:text-blue-500 font-medium"
+        class="text-900 hover:text-blue-500 font-medium text-xl"
         v-bind:class="{ 'text-blue-500': isLinkActive('/about') }"
         >About</NuxtLink
       >
       <NuxtLink
         to="/todo"
-        class="text-900 ml-2 hover:text-blue-500 font-medium"
-        v-bind:class="{ 'text-blue-500': isLinkActive('/todo') }"
+        class="text-900 ml-2 hover:text-blue-500 font-medium text-xl"
+        v-bind:class="{
+          'text-blue-500': isLinkActive('/todo'),
+        }"
         >Todo</NuxtLink
       >
-    </template>
-  </Menubar>
+    </div>
+  </header>
 </template>
 
 <script>
