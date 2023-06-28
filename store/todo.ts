@@ -15,12 +15,14 @@ export const todoStore = defineStore("todoStore", {
       this.list = tmpList;
     },
     addOrUpTodo(name: string) {
-      const isExist =
-        this.list.findIndex((item: todoObject) => item.name === name) !== -1;
+      const isExist = this.list.findIndex(
+        (item: todoObject) => item.name === name
+      );
 
-      if (name.trim() === "") return alert("Tên task không được trống");
+      if (name.trim() === "") return "Tên task không được trống";
 
-      if (isExist) return alert("Task này đã tồn tại");
+      if (isExist !== -1 && this.list[isExist].id !== this.newTodo.id)
+        return "Task này đã tồn tại";
 
       let newData = {
         id: Date.now(),
@@ -42,6 +44,7 @@ export const todoStore = defineStore("todoStore", {
       }
       this.saveStorage();
       this.newTodo = { id: "", name: "", status: false };
+      return "";
     },
 
     removeTodo(todoId: number) {

@@ -3,9 +3,11 @@
     <span class="p-float-label flex-grow-1">
       <InputText
         class="w-full"
+        :class="class"
         id="username"
         v-model="value"
         @input="$emit('update:modelValue', $event.target.value)"
+        :aria-describedby="ariaDescribedby"
       />
       <label for="username">{{ placeholder }}</label>
     </span>
@@ -26,8 +28,14 @@ export default {
     label: {
       type: String,
     },
+    class: {
+      type: String,
+    },
     handleActions: {
       type: Function,
+    },
+    ariaDescribedby: {
+      type: String,
     },
   },
   emits: ["update:modelValue"],

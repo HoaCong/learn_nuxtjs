@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-28rem m-auto border-solid border-1 border-800 border-round-md p-3"
+    class="w-28rem m-auto border-solid border-1 border-800 border-round-md p-3 mt-5"
   >
     <h1 class="text-center mt-2 mb-2">Todo List</h1>
 
@@ -20,15 +20,19 @@
         placeholder="Name task"
         :handleActions="handleAdd"
         :label="newTodo.id !== '' ? 'Edit' : 'Add'"
-        class="w-full"
+        :class="{ 'w-full': true, 'p-invalid': error.status }"
+        ariaDescribedby="text-error"
       />
+      <small class="p-error" id="text-error">{{ error.message }}</small>
     </div>
 
     <hr class="mb-3" />
     <div v-if="pending" class="text-center">
       <ProgressSpinner class="w-5rem h-5rem" />
     </div>
-    <div v-else-if="isEmpty || listTodo.length === 0">Không có dữ liệu</div>
+    <div v-else-if="isEmptyData || listTodo.length === 0" class="text-center">
+      Không có dữ liệu
+    </div>
     <div v-else>
       <div class="flex justify-content-between align-items-center">
         <label
@@ -86,7 +90,7 @@
               class="ml-2"
               icon="pi pi-file-edit"
               rounded
-              @click="editTodo(todo)"
+              @click="handleEdit(todo)"
               :disabled="todo.status"
               severity="warning"
             />
@@ -117,12 +121,34 @@ export default defineComponent({
       keyword: "",
       listSearch: [],
       listId: [],
-      isEmpty: false,
+      isEmptyData: false,
+      isSubmit: false,
+      error: { status: false, value: "", message: "" },
     };
   },
   emits: {},
   props: {},
-
+  beforeUpdate() {
+    if (this.isSubmit) {
+      if (this.newTodo.name === this.error.value) {
+        if (this.newTodo.name === "") {
+          this.error = {
+            ...this.error,
+            status: true,
+            message: "Tên task không được trống",
+          };
+        } else {
+          this.error = {
+            ...this.error,
+            status: true,
+            message: "Task này đã tồn tại",
+          };
+        }
+      } else {
+        this.error = { ...this.error, status: false, message: "" };
+      }
+    }
+  },
   mounted() {
     const list =
       this.list.length === 0
@@ -161,14 +187,31 @@ export default defineComponent({
       const tmp = [...this.list].filter((todo) =>
         todo.name.toLowerCase().includes(name.toLowerCase())
       );
-      this.isEmpty = tmp.length === 0;
+      this.isEmptyData = tmp.length === 0;
       this.listSearch = tmp;
       this.listId = [];
     },
     handleAdd() {
-      this.keyword = "";
       this.listSearch = [];
-      this.addOrUpTodo(this.newTodo.name);
+      this.isSubmit = true;
+      const result = this.addOrUpTodo(this.newTodo.name);
+      const tmp = this.newTodo.name;
+      this.error = {
+        status: result !== "",
+        value: tmp,
+        message: result,
+      };
+      this.keyword = "";
+      if (result === "") this.isSubmit = false;
+    },
+    handleEdit(id) {
+      this.error = {
+        status: false,
+        value: "",
+        message: "",
+      };
+      this.isSubmit = false;
+      this.editTodo(id);
     },
     handleRemove(id) {
       this.removeTodo(id);
