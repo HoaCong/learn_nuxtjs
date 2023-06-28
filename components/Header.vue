@@ -8,13 +8,13 @@
     <template v-slot:end>
       <NuxtLink
         to="/about"
-        class="text-900 hover:text-blue-500"
+        class="text-900 hover:text-blue-500 font-medium"
         v-bind:class="{ 'text-blue-500': isLinkActive('/about') }"
         >About</NuxtLink
       >
       <NuxtLink
         to="/todo"
-        class="text-900 ml-2 hover:text-blue-500"
+        class="text-900 ml-2 hover:text-blue-500 font-medium"
         v-bind:class="{ 'text-blue-500': isLinkActive('/todo') }"
         >Todo</NuxtLink
       >
