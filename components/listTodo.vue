@@ -114,7 +114,6 @@ import { mapState, mapActions } from "pinia";
 import { todoStore } from "../store";
 
 export default defineComponent({
-  // type inference enabled
   data() {
     return {
       pending: true,
@@ -129,24 +128,22 @@ export default defineComponent({
   emits: {},
   props: {},
   beforeUpdate() {
-    if (this.isSubmit) {
-      if (this.newTodo.name === this.error.value) {
-        if (this.newTodo.name === "") {
-          this.error = {
-            ...this.error,
-            status: true,
-            message: "Tên task không được trống",
-          };
-        } else {
-          this.error = {
-            ...this.error,
-            status: true,
-            message: "Task này đã tồn tại",
-          };
-        }
+    if (this.isSubmit && this.newTodo.name === this.error.value) {
+      if (this.newTodo.name === "") {
+        this.error = {
+          ...this.error,
+          status: true,
+          message: "Tên task không được trống",
+        };
       } else {
-        this.error = { ...this.error, status: false, message: "" };
+        this.error = {
+          ...this.error,
+          status: true,
+          message: "Task này đã tồn tại",
+        };
       }
+    } else {
+      this.error = { ...this.error, status: false, message: "" };
     }
   },
   mounted() {
@@ -157,7 +154,6 @@ export default defineComponent({
     this.initialList(list);
     this.pending = false;
   },
-
   computed: {
     ...mapState(todoStore, ["list", "newTodo"]),
     listTodo() {
@@ -182,7 +178,6 @@ export default defineComponent({
       "doneAll",
       "removeAll",
     ]),
-
     searchTodo(name) {
       const tmp = [...this.list].filter((todo) =>
         todo.name.toLowerCase().includes(name.toLowerCase())
@@ -245,7 +240,6 @@ export default defineComponent({
       );
       this.doneTodo(id);
     },
-
     handleRemoveAll() {
       this.listSearch = this.listSearch.filter(
         (todo) => !this.listId.includes(todo.id)
