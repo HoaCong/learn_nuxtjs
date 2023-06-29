@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import InputText from "primevue/inputtext";
 export default {
   props: {
     modelValue: {
@@ -49,5 +50,6 @@ export default {
       },
     },
   },
+  components: { InputText },
 };
 </script>

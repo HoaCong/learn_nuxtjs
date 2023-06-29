@@ -1,6 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
-import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import { describe, expect, it } from "vitest";
+import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import Header from "./Header.vue";
 
 describe("Header", () => {
