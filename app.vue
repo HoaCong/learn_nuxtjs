@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-column min-h-screen">
-    <Header />
+    <HeaderVue />
     <main id="main"><NuxtPage /></main>
-    <Footer />
+    <FooterVue />
   </div>
 </template>
 <style>

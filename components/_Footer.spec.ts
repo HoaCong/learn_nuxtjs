@@ -1,10 +1,10 @@
 import { mount } from "@vue/test-utils";
-import { describe, expect, test } from "vitest";
+import { describe, expect, it } from "vitest";
 import FooterVue from "./Footer.vue";
 
-describe("YourComponent", () => {
-  test("is a Vue instance", () => {
+describe("Footer", () => {
+  it("Correct text", () => {
     const wrapper = mount(FooterVue);
-    expect(wrapper.vm).toBeTruthy();
+    expect(wrapper.text()).toContain("Footer");
   });
 });
