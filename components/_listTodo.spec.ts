@@ -2,24 +2,36 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { shallowMount } from "@vue/test-utils";
 import TodoList from "./listTodo.vue";
+import InputButton from "./inputButton.vue";
 import App from "../app.vue";
 import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
 describe("TodoList", () => {
   let app: any;
+  let wrapper: any;
 
   beforeEach(() => {
     app = createApp(App);
     const pinia = createPinia();
     app.use(pinia);
+    wrapper = shallowMount(TodoList, { global: { plugins: [app] } });
   });
 
   it("renders the component correctly", () => {
-    const wrapper = shallowMount(TodoList, { global: { plugins: [app] } });
+    expect(wrapper.exists()).toBe(true);
+  });
 
-    // Perform your assertions here
-    // For example, you can check if the component is rendered correctly:
+  it('displays the "Todo List" title', () => {
     expect(wrapper.find("h1").text()).toBe("Todo List");
   });
 
-  // Add more test cases here
+  it("renders InputButton component correctly", () => {
+    const wrapper = shallowMount(TodoList, {
+      global: {
+        components: {
+          InputButton,
+        },
+      },
+    });
+    expect(wrapper.findComponent(InputButton).exists()).toBe(true);
+  });
 });

@@ -9,6 +9,7 @@ describe("InputButton", () => {
   beforeEach(() => {
     wrapper = shallowMount(InputButton, {
       propsData: {
+        btnId: "add",
         modelValue: "",
         placeholder: "Enter username",
         label: "Submit",
@@ -25,6 +26,15 @@ describe("InputButton", () => {
 
   it("renders the component correctly", () => {
     expect(wrapper.html()).toMatchSnapshot();
+  });
+
+  it("renders props correctly", () => {
+    expect(wrapper.props().modelValue).toBe("");
+    expect(wrapper.props().placeholder).toBe("Enter username");
+    expect(wrapper.props().label).toBe("Submit");
+    expect(wrapper.props().class).toBe("custom-class");
+    expect(wrapper.props().ariaDescribedby).toBe("description");
+    expect(wrapper.props().btnId).toBe("add");
   });
 
   it("emits an update event when input value changes", async () => {

@@ -10,7 +10,7 @@
       <label>{{ placeholder }}</label>
     </span>
 
-    <Button :label="label" @click="handleActions(value)" />
+    <Button :id="btnId" :label="label" @click="handleActions(value)" />
   </div>
 </template>
 
@@ -34,6 +34,9 @@ export default {
       type: Function,
     },
     ariaDescribedby: {
+      type: String,
+    },
+    btnId: {
       type: String,
     },
   },
