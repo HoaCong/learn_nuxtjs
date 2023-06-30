@@ -5,6 +5,8 @@ import TodoList from "./listTodo.vue";
 import InputButton from "./inputButton.vue";
 import App from "../app.vue";
 import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
+import ProgressSpinner from "primevue/progressspinner";
+
 describe("TodoList", () => {
   let app: any;
   let wrapper: any;
@@ -33,5 +35,55 @@ describe("TodoList", () => {
       },
     });
     expect(wrapper.findComponent(InputButton).exists()).toBe(true);
+  });
+
+  it("renders spinner when pending is true", () => {
+    const wrapper = shallowMount(TodoList, {
+      data() {
+        return {
+          pending: true,
+          keyword: "",
+          listSearch: [],
+          listId: [],
+          isEmptyData: false,
+          isSubmit: false,
+          error: { status: false, value: "", message: "" },
+        };
+      },
+      global: {
+        components: {
+          InputButton,
+          ProgressSpinner,
+        },
+      },
+    });
+
+    const spinnerElement = wrapper.findComponent(ProgressSpinner);
+    expect(spinnerElement.exists()).toBe(true);
+  });
+
+  it('renders "Không có dữ liệu" when pending is false', () => {
+    wrapper = shallowMount(TodoList, {
+      data() {
+        return {
+          pending: false,
+          keyword: "",
+          listSearch: [],
+          listId: [],
+          isEmptyData: false,
+          isSubmit: false,
+          error: { status: false, value: "", message: "" },
+        };
+      },
+      global: {
+        components: {
+          InputButton,
+          ProgressSpinner,
+        },
+      },
+    });
+    const spinnerElement = wrapper.findComponent(ProgressSpinner);
+    expect(spinnerElement.exists()).toBe(false);
+    expect(wrapper.text()).toContain("Không có dữ liệu");
   });
 });
