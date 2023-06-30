@@ -116,9 +116,10 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "pinia";
 import { defineComponent } from "vue";
-import { mapState, mapActions } from "pinia";
 import { todoStore } from "../store";
+import { getListTodo } from "../utils";
 
 export default defineComponent({
   data() {
