@@ -11,7 +11,6 @@
         :handleActions="searchTodo"
         label="Search"
         class="w-full"
-        btnId="btnSearch"
       />
     </div>
 
@@ -23,7 +22,6 @@
         :label="newTodo.id !== '' ? 'Edit' : 'Add'"
         :class="{ 'w-full': true, 'p-invalid': error.status }"
         ariaDescribedby="text-error"
-        btnId="btnAdd"
       />
       <small class="p-error" id="text-error">{{ error.message }}</small>
     </div>

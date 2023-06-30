@@ -1,3 +1,3 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`InputButton > renders the component correctly 1`] = `"<div class=\\"flex justify-content-between\\"><span class=\\"p-float-label flex-grow-1\\"><input-text-stub modelvalue=\\"\\" class=\\"custom-class\\" aria-describedby=\\"description\\"></input-text-stub><label>Enter username</label></span><button id=\\"add\\" label=\\"Submit\\"></button></div>"`;
+exports[`InputButton > renders the component correctly 1`] = `"<div class=\\"flex justify-content-between\\"><span class=\\"p-float-label flex-grow-1\\"><input-text-stub modelvalue=\\"\\" class=\\"custom-class\\" aria-describedby=\\"description\\"></input-text-stub><label>Enter username</label></span><button label=\\"Submit\\"></button></div>"`;
