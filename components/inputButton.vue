@@ -2,14 +2,12 @@
   <div class="flex justify-content-between">
     <span class="p-float-label flex-grow-1">
       <InputText
-        class="w-full"
         :class="class"
-        id="username"
         v-model="value"
         @input="$emit('update:modelValue', $event.target.value)"
         :aria-describedby="ariaDescribedby"
       />
-      <label for="username">{{ placeholder }}</label>
+      <label>{{ placeholder }}</label>
     </span>
 
     <Button :label="label" @click="handleActions(value)" />
@@ -50,6 +48,8 @@ export default {
       },
     },
   },
-  components: { InputText },
+  components: {
+    InputText,
+  },
 };
 </script>
