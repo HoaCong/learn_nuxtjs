@@ -15,30 +15,7 @@ describe("TodoList", () => {
     app = createApp(App);
     const pinia = createPinia();
     app.use(pinia);
-    wrapper = shallowMount(TodoList, { global: { plugins: [app] } });
-  });
-
-  it("renders the component correctly", () => {
-    expect(wrapper.exists()).toBe(true);
-  });
-
-  it('displays the "Todo List" title', () => {
-    expect(wrapper.find("h1").text()).toBe("Todo List");
-  });
-
-  it("renders InputButton component correctly", () => {
-    const wrapper = shallowMount(TodoList, {
-      global: {
-        components: {
-          InputButton,
-        },
-      },
-    });
-    expect(wrapper.findComponent(InputButton).exists()).toBe(true);
-  });
-
-  it("renders spinner when pending is true", () => {
-    const wrapper = shallowMount(TodoList, {
+    wrapper = shallowMount(TodoList, {
       data() {
         return {
           pending: true,
@@ -51,39 +28,35 @@ describe("TodoList", () => {
         };
       },
       global: {
+        plugins: [app],
         components: {
           InputButton,
           ProgressSpinner,
         },
       },
     });
+  });
 
-    const spinnerElement = wrapper.findComponent(ProgressSpinner);
-    expect(spinnerElement.exists()).toBe(true);
+  it("renders the component correctly", () => {
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('displays the "Todo List" title', () => {
+    expect(wrapper.find("h1").text()).toBe("Todo List");
+  });
+
+  it("renders InputButton component correctly", () => {
+    expect(wrapper.findComponent(InputButton).exists()).toBe(true);
+  });
+
+  it("renders spinner when pending is true", async () => {
+    wrapper.setData({ pending: true });
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findComponent(ProgressSpinner).exists()).toBe(true);
   });
 
   it('renders "Không có dữ liệu" when pending is false', () => {
-    wrapper = shallowMount(TodoList, {
-      data() {
-        return {
-          pending: false,
-          keyword: "",
-          listSearch: [],
-          listId: [],
-          isEmptyData: false,
-          isSubmit: false,
-          error: { status: false, value: "", message: "" },
-        };
-      },
-      global: {
-        components: {
-          InputButton,
-          ProgressSpinner,
-        },
-      },
-    });
-    const spinnerElement = wrapper.findComponent(ProgressSpinner);
-    expect(spinnerElement.exists()).toBe(false);
+    expect(wrapper.findComponent(ProgressSpinner).exists()).toBe(false);
     expect(wrapper.text()).toContain("Không có dữ liệu");
   });
 });
