@@ -50,6 +50,7 @@
             type="checkbox"
             v-model="isCheckedAll"
             @change="handleCheckAll($event)"
+            id="check-all"
           />
         </label>
         <div class="flex justify-content-between align-items-center">
@@ -58,6 +59,7 @@
             rounded
             @click="handleDoneAll()"
             severity="success"
+            id="done-all"
           />
           <Button
             class="ml-2"
@@ -65,6 +67,7 @@
             rounded
             @click="handleRemoveAll()"
             severity="danger"
+            id="remove-all"
           />
         </div>
       </div>
@@ -193,6 +196,7 @@ export default defineComponent({
       this.isEmptyData = tmp.length === 0;
       this.listSearch = tmp;
       this.listId = [];
+      this.isSubmit = false;
     },
     handleAdd() {
       this.listSearch = [];
@@ -219,6 +223,7 @@ export default defineComponent({
     handleRemove(id) {
       this.removeTodo(id);
       this.listId = this.listId.filter((item) => item !== id);
+      this.listSearch = this.listSearch.filter((item) => item.id !== id);
     },
     handleCheckAll(event) {
       this.listId = event.target.checked

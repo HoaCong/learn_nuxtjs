@@ -59,4 +59,16 @@ describe("TodoList", () => {
     expect(wrapper.findComponent(ProgressSpinner).exists()).toBe(false);
     expect(wrapper.text()).toContain("Không có dữ liệu");
   });
+
+  it("Thêm giá trị,chọn tất cả và xóa tất cả thì listSearch = []", async () => {
+    wrapper.setData({
+      listSearch: [{ id: 1, name: "2", status: false }],
+      listId: [1],
+    });
+    await wrapper.vm.$nextTick();
+    wrapper.find("#check-all").trigger("click");
+    wrapper.find("#remove-all").trigger("click");
+    expect(wrapper.vm.listSearch).toHaveLength(0);
+    expect(wrapper.vm.listId).toHaveLength(0);
+  });
 });
