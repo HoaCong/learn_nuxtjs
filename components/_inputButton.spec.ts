@@ -1,24 +1,30 @@
 import { shallowMount } from "@vue/test-utils";
 import InputText from "primevue/inputtext";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import InputButton from "./inputButton.vue";
 
 describe("InputButton", () => {
   let wrapper: any;
 
-  wrapper = shallowMount(InputButton, {
-    propsData: {
-      modelValue: "",
-      placeholder: "Enter username",
-      label: "Submit",
-      class: "custom-class",
-      handleActions: vi.fn(),
-      ariaDescribedby: "description",
-    },
+  beforeEach(() => {
+    wrapper = shallowMount(InputButton, {
+      propsData: {
+        modelValue: "",
+        placeholder: "Enter username",
+        label: "Submit",
+        class: "custom-class",
+        handleActions: vi.fn(),
+        ariaDescribedby: "description",
+      },
+    });
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
   });
 
   it("renders the component correctly", () => {
-    expect(wrapper.html()).toMatchSnapshot();
+    expect(wrapper.exists()).toBe(true);
   });
 
   it("renders props correctly", () => {

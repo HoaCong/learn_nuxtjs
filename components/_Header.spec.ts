@@ -29,5 +29,6 @@ describe("Header", () => {
 
     expect(aboutLink.classes()).toContain("text-blue-500");
     expect(todoLink.classes()).not.toContain("text-blue-500");
+    wrapper.unmount();
   });
 });

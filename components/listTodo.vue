@@ -4,7 +4,7 @@
   >
     <h1 class="text-center mt-2 mb-2">Todo List</h1>
 
-    <div class="mb-4">
+    <!-- <div class="mb-4">
       <InputButton
         v-model="keyword"
         placeholder="Keyword"
@@ -23,6 +23,36 @@
         :class="{ 'w-full': true, 'p-invalid': error.status }"
         ariaDescribedby="text-error"
       />
+      <small class="p-error" id="text-error">{{ error.message }}</small>
+    </div> -->
+    <div class="mb-4">
+      <div class="flex justify-content-between">
+        <span class="p-float-label flex-grow-1">
+          <InputText class="w-full" v-model="keyword" />
+          <label>Keyword</label>
+        </span>
+
+        <Button label="Search" @click="searchTodo(keyword)" />
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <div class="flex justify-content-between">
+        <span class="p-float-label flex-grow-1">
+          <InputText
+            class="w-full"
+            :class="{ 'p-invalid': error.status }"
+            v-model="newTodo.name"
+            aria-describedby="text-error"
+          />
+          <label>Name task</label>
+        </span>
+
+        <Button
+          :label="newTodo.id !== '' ? 'Edit' : 'Add'"
+          @click="handleAdd(value)"
+        />
+      </div>
       <small class="p-error" id="text-error">{{ error.message }}</small>
     </div>
 
