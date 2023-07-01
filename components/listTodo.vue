@@ -41,6 +41,7 @@
       Không có dữ liệu
     </div>
     <div v-else>
+      <!-- ACTIONS FOR ALL -->
       <div class="flex justify-content-between align-items-center">
         <label
           class="p-2 border-round-md hover:surface-500 transition-colors transition-duration-150"
@@ -88,6 +89,7 @@
             <del v-if="todo.status">{{ todo.name }}</del>
             <span v-else>{{ todo.name }}</span>
           </label>
+          <!-- ACTIONS element -->
           <div>
             <Button
               icon="pi pi-check"
@@ -120,6 +122,7 @@
 
 <script>
 import { mapActions, mapState } from "pinia";
+import InputButton from "./inputButton.vue";
 import { defineComponent } from "vue";
 import { todoStore } from "../store";
 import { getListTodo } from "../utils";
@@ -136,6 +139,7 @@ export default defineComponent({
       error: { status: false, value: "", message: "" },
     };
   },
+  components: { InputButton },
   emits: {},
   props: {},
   beforeUpdate() {
@@ -223,7 +227,9 @@ export default defineComponent({
     handleRemove(id) {
       this.removeTodo(id);
       this.listId = this.listId.filter((item) => item !== id);
-      this.listSearch = this.listSearch.filter((item) => item.id !== id);
+      const tmp = this.listSearch.filter((item) => item.id !== id);
+      this.listSearch = tmp;
+      this.isEmptyData = tmp.length === 0;
     },
     handleCheckAll(event) {
       this.listId = event.target.checked

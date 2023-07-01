@@ -1,11 +1,11 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
 import { shallowMount } from "@vue/test-utils";
-import TodoList from "./listTodo.vue";
-import InputButton from "./inputButton.vue";
+import { createPinia } from "pinia";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createApp } from "vue";
 import App from "../app.vue";
-import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
-import ProgressSpinner from "primevue/progressspinner";
+import InputButton from "./inputButton.vue";
+import TodoList from "./listTodo.vue";
+import InputText from "primevue/inputtext";
 
 describe("TodoList", () => {
   let app: any;
@@ -31,7 +31,6 @@ describe("TodoList", () => {
         plugins: [app],
         components: {
           InputButton,
-          ProgressSpinner,
         },
       },
     });
@@ -45,28 +44,49 @@ describe("TodoList", () => {
     expect(wrapper.find("h1").text()).toBe("Todo List");
   });
 
-  it("renders InputButton component correctly", () => {
-    expect(wrapper.findComponent(InputButton).exists()).toBe(true);
+  it("Two-way binding keyword COM cha -> COM con", async () => {
+    const inputButton = wrapper.findComponent(InputButton);
+    const keyword = "New keyword";
+    await wrapper.setData({ keyword });
+    await wrapper.vm.$nextTick();
+    expect(inputButton.props("modelValue")).toBe(keyword);
+  });
+
+  it("Two-way binding keyword COM con -> COM cha", async () => {
+    const wrapper = shallowMount(TodoList);
+    const inputButtonWrapper = wrapper.findComponent(InputButton);
+    const modelValue = "New model value";
+    await inputButtonWrapper.vm.$emit("update:modelValue", modelValue);
+    expect(wrapper.find("[label='Search']")).toBeTruthy();
+    expect(wrapper.vm.keyword).toBe(modelValue);
+  });
+
+  it("Search Action", async () => {
+    wrapper.setData({
+      keyword: "demo",
+      listSearch: [{ id: "1", name: "demo", status: false }],
+    });
+    await wrapper.vm.$nextTick();
+    expect(wrapper.findAll("label.name-task")).toHaveLength(1);
   });
 
   it("renders spinner when pending is true", async () => {
     wrapper.setData({ pending: true });
     await wrapper.vm.$nextTick();
-    expect(wrapper.findComponent(ProgressSpinner).exists()).toBe(true);
+    expect(wrapper.find("[aria-label='ProgressSpinner']").exists()).toBe(true);
   });
 
-  it('renders "Không có dữ liệu" when pending is false', () => {
-    expect(wrapper.findComponent(ProgressSpinner).exists()).toBe(false);
+  it('renders "Không có dữ liệu" when pending is false, ListTodo = []', () => {
+    expect(wrapper.find("[aria-label='ProgressSpinner']").exists()).toBe(false);
     expect(wrapper.text()).toContain("Không có dữ liệu");
   });
 
-  it("Thêm giá trị,chọn tất cả và xóa tất cả thì listSearch = []", async () => {
+  it("Thêm giá trị, chọn tất cả và xóa tất cả thì listSearch = []", async () => {
     wrapper.setData({
       listSearch: [{ id: 1, name: "2", status: false }],
-      listId: [1],
     });
     await wrapper.vm.$nextTick();
-    wrapper.find("#check-all").trigger("click");
+    wrapper.find("input#check-all").setChecked(true);
     wrapper.find("#remove-all").trigger("click");
     expect(wrapper.vm.listSearch).toHaveLength(0);
     expect(wrapper.vm.listId).toHaveLength(0);

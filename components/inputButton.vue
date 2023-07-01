@@ -10,7 +10,7 @@
       <label>{{ placeholder }}</label>
     </span>
 
-    <Button :label="label" @click="handleActions(value)" />
+    <Button :label="label + modelValue" @click="handleActions(value)" />
   </div>
 </template>
 

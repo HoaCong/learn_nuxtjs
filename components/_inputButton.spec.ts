@@ -1,26 +1,20 @@
 import { shallowMount } from "@vue/test-utils";
-import InputButton from "./inputButton.vue";
 import InputText from "primevue/inputtext";
-import { describe, expect, it, beforeEach, afterEach, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import InputButton from "./inputButton.vue";
 
 describe("InputButton", () => {
   let wrapper: any;
 
-  beforeEach(() => {
-    wrapper = shallowMount(InputButton, {
-      propsData: {
-        modelValue: "",
-        placeholder: "Enter username",
-        label: "Submit",
-        class: "custom-class",
-        handleActions: vi.fn(),
-        ariaDescribedby: "description",
-      },
-    });
-  });
-
-  afterEach(() => {
-    wrapper.unmount();
+  wrapper = shallowMount(InputButton, {
+    propsData: {
+      modelValue: "",
+      placeholder: "Enter username",
+      label: "Submit",
+      class: "custom-class",
+      handleActions: vi.fn(),
+      ariaDescribedby: "description",
+    },
   });
 
   it("renders the component correctly", () => {
@@ -37,9 +31,10 @@ describe("InputButton", () => {
 
   it("emits an update event when input value changes", async () => {
     const input = wrapper.findComponent(InputText);
-    await input.setValue("Hòa Lê");
+    const newValue = "Todo List";
+    await input.setValue(newValue);
     expect(wrapper.emitted("update:modelValue")).toBeTruthy();
-    expect(wrapper.emitted("update:modelValue")[0][0]).toBe("Hòa Lê");
+    expect(wrapper.emitted("update:modelValue")[0][0]).toBe(newValue);
   });
 
   it("calls handleActions method when the button is clicked", () => {
