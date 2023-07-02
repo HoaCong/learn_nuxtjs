@@ -14,11 +14,6 @@ describe("TodoList", () => {
     { id: 1, name: "Task 1", status: false },
     { id: 2, name: "Task 2", status: true },
   ];
-  const newTodoMock = {
-    id: "",
-    name: "",
-    status: false,
-  };
 
   beforeEach(() => {
     app = createApp(App);
@@ -123,10 +118,44 @@ describe("TodoList", () => {
     expect(wrapper.vm.isEmptyData).toBe(true);
   });
 
-  it("Remove all data", async () => {
+  it("Xóa tất cả dữ liệu", async () => {
     expect(wrapper.vm.list).toHaveLength(2);
     wrapper.find("input#check-all").setChecked(true);
     wrapper.find("#remove-all").trigger("click");
     expect(wrapper.vm.list).toHaveLength(0);
+  });
+
+  it("Thêm dữ liệu", async () => {
+    const inputAdd = wrapper.findComponent('[placeholder="Name task"]');
+    const btnAdd = wrapper.find('[label="Add"]');
+
+    inputAdd.setValue("Task 1");
+    btnAdd.trigger("click");
+    expect(wrapper.vm.error.message).toBe("Task này đã tồn tại");
+
+    inputAdd.setValue("Task 3");
+    btnAdd.trigger("click");
+    expect(wrapper.vm.listTodo).toHaveLength(3);
+  });
+
+  it("Chỉnh sửa dữ liệu", async () => {
+    const listBtnEdit = wrapper.find("[data-label='btnEdit']");
+    listBtnEdit.trigger("click");
+    await wrapper.vm.$nextTick();
+
+    const inputAdd = wrapper.findComponent('[placeholder="Name task"]');
+    const btnEdit = wrapper.find('[label="Edit"]');
+
+    inputAdd.setValue("");
+    btnEdit.trigger("click");
+    expect(wrapper.vm.error.message).toBe("Tên task không được trống");
+
+    inputAdd.setValue("Task 2");
+    btnEdit.trigger("click");
+    expect(wrapper.vm.error.message).toBe("Task này đã tồn tại");
+
+    inputAdd.setValue("Task 3");
+    btnEdit.trigger("click");
+    expect(wrapper.vm.listTodo[0].name).toBe("Task 3");
   });
 });

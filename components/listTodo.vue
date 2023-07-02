@@ -136,6 +136,7 @@
               rounded
               @click="handleEdit(todo)"
               :disabled="todo.status"
+              data-label="btnEdit"
               severity="warning"
             />
             <Button
