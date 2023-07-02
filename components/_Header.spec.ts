@@ -4,7 +4,7 @@ import { RouteRecordRaw, createRouter, createWebHistory } from "vue-router";
 import Header from "./Header.vue";
 
 describe("Header", () => {
-  it("Correct active route", async () => {
+  it("Đúng route", async () => {
     const routes = [
       { path: "/", name: "Home" },
       { path: "/about", name: "About" },

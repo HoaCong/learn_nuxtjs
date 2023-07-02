@@ -25,10 +25,11 @@
       />
       <small class="p-error" id="text-error">{{ error.message }}</small>
     </div> -->
+
     <div class="mb-4">
       <div class="flex justify-content-between">
         <span class="p-float-label flex-grow-1">
-          <InputText class="w-full" v-model="keyword" />
+          <InputText class="w-full" v-model="keyword" placeholder="Keyword" />
           <label>Keyword</label>
         </span>
 
@@ -44,6 +45,7 @@
             :class="{ 'p-invalid': error.status }"
             v-model="newTodo.name"
             aria-describedby="text-error"
+            placeholder="Name task"
           />
           <label>Name task</label>
         </span>
@@ -153,6 +155,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import InputButton from "./inputButton.vue";
+import InputText from "primevue/inputtext";
 import { defineComponent } from "vue";
 import { todoStore } from "../store";
 import { getListTodo } from "../utils";
@@ -169,7 +172,7 @@ export default defineComponent({
       error: { status: false, value: "", message: "" },
     };
   },
-  components: { InputButton },
+  components: { InputText },
   emits: {},
   props: {},
   beforeUpdate() {

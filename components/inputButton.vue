@@ -6,11 +6,13 @@
         v-model="value"
         @input="$emit('update:modelValue', $event.target.value)"
         :aria-describedby="ariaDescribedby"
+        :data-label="label"
       />
       <label>{{ placeholder }}</label>
     </span>
 
-    <Button :label="label + modelValue" @click="handleActions(value)" />
+    <Button :label="label" @click="handleActions(value)" />
+    <p id="ham"></p>
   </div>
 </template>
 

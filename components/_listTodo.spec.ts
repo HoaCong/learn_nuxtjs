@@ -52,7 +52,7 @@ describe("TodoList", () => {
     wrapper.unmount();
   });
 
-  it("renders the component correctly", () => {
+  it("Hiển thị đúng component", () => {
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.find("h1").text()).toBe("Todo List");
     expect(wrapper.find("[label='Search']")).toBeTruthy();
@@ -74,7 +74,7 @@ describe("TodoList", () => {
   //   expect(wrapper.vm.keyword).toBe(modelValue);
   // });
 
-  it("renders spinner when pending is true", async () => {
+  it("Hiển thị ProgressSpinner khi pending: true", async () => {
     wrapper.setData({ pending: true });
     await wrapper.vm.$nextTick();
     expect(wrapper.find("[aria-label='ProgressSpinner']").exists()).toBe(true);
@@ -87,20 +87,46 @@ describe("TodoList", () => {
     expect(wrapper.text()).toContain("Không có dữ liệu");
   });
 
-  it("Thêm giá trị, chọn tất cả và xóa tất cả thì listSearch = []", async () => {
-    wrapper.setData({
-      listSearch: [{ id: 1, name: "2", status: false }],
-    });
-    await wrapper.vm.$nextTick();
-    wrapper.find("input#check-all").setChecked(true);
-    wrapper.find("#remove-all").trigger("click");
-    expect(wrapper.vm.listSearch).toHaveLength(0);
-    expect(wrapper.vm.listId).toHaveLength(0);
+  // it("Thêm giá trị, chọn tất cả và xóa tất cả thì listSearch = []", async () => {
+  //   wrapper.setData({
+  //     listSearch: [{ id: 1, name: "2", status: false }],
+  //   });
+  //   await wrapper.vm.$nextTick();
+  //   wrapper.find("input#check-all").setChecked(true);
+  //   wrapper.find("#remove-all").trigger("click");
+  //   expect(wrapper.vm.listSearch).toHaveLength(0);
+  //   expect(wrapper.vm.listId).toHaveLength(0);
+  // });
+
+  it("Search 'Task 1'", async () => {
+    const inputSearch = wrapper.findComponent('[placeholder="Keyword"]');
+    const btnSearch = wrapper.find('[label="Search"]');
+    inputSearch.setValue("Task 1");
+    btnSearch.trigger("click");
+    const dataSearch = [
+      {
+        id: 1,
+        name: "Task 1",
+        status: false,
+      },
+    ];
+    expect(wrapper.vm.listSearch).toEqual(dataSearch);
+    expect(wrapper.vm.listTodo).toEqual(dataSearch);
   });
 
-  it('computed property "listTodo" returns correct value when listSearch is empty', async () => {
-    const data = wrapper.findAll("button");
-    console.log("it  data:", data);
-    console.log("demo", wrapper.vm.listSearch, wrapper.vm.isEmptyData);
+  it("Search 'nodata'", async () => {
+    const inputSearch = wrapper.findComponent('[placeholder="Keyword"]');
+    const btnSearch = wrapper.find('[label="Search"]');
+    inputSearch.setValue("NoData");
+    btnSearch.trigger("click");
+    expect(wrapper.vm.listSearch).toEqual([]);
+    expect(wrapper.vm.isEmptyData).toBe(true);
+  });
+
+  it("Remove all data", async () => {
+    expect(wrapper.vm.list).toHaveLength(2);
+    wrapper.find("input#check-all").setChecked(true);
+    wrapper.find("#remove-all").trigger("click");
+    expect(wrapper.vm.list).toHaveLength(0);
   });
 });
