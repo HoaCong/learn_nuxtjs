@@ -6,8 +6,9 @@ import App from "../app.vue";
 import InputButton from "./inputButton.vue";
 import TodoList from "./listTodo.vue";
 import InputText from "primevue/inputtext";
+import { todoObject } from "types";
 
-describe("TodoList", () => {
+describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
   let app: any;
   let wrapper: any;
   const listMock = [
@@ -82,17 +83,6 @@ describe("TodoList", () => {
     expect(wrapper.text()).toContain("Không có dữ liệu");
   });
 
-  // it("Thêm giá trị, chọn tất cả và xóa tất cả thì listSearch = []", async () => {
-  //   wrapper.setData({
-  //     listSearch: [{ id: 1, name: "2", status: false }],
-  //   });
-  //   await wrapper.vm.$nextTick();
-  //   wrapper.find("input#check-all").setChecked(true);
-  //   wrapper.find("#remove-all").trigger("click");
-  //   expect(wrapper.vm.listSearch).toHaveLength(0);
-  //   expect(wrapper.vm.listId).toHaveLength(0);
-  // });
-
   it("Search 'Task 1'", async () => {
     const inputSearch = wrapper.findComponent('[placeholder="Keyword"]');
     const btnSearch = wrapper.find('[label="Search"]');
@@ -116,6 +106,15 @@ describe("TodoList", () => {
     btnSearch.trigger("click");
     expect(wrapper.vm.listSearch).toEqual([]);
     expect(wrapper.vm.isEmptyData).toBe(true);
+  });
+
+  it("Hoàn thành tất cả task todo", async () => {
+    wrapper.find("input#check-all").setChecked(true);
+    wrapper.find("#done-all").trigger("click");
+
+    wrapper.vm.list.forEach((item: todoObject) => {
+      expect(item.status).toBe(true);
+    });
   });
 
   it("Xóa tất cả dữ liệu", async () => {
@@ -157,5 +156,23 @@ describe("TodoList", () => {
     inputAdd.setValue("Task 3");
     btnEdit.trigger("click");
     expect(wrapper.vm.listTodo[0].name).toBe("Task 3");
+  });
+
+  it("Hoàn thành 1 todo task", async () => {
+    const listBtnDone = wrapper.find("[data-label='btnDone']");
+    listBtnDone.trigger("click");
+    await wrapper.vm.$nextTick();
+
+    const tagDel = wrapper.find(".name-task del");
+    expect(tagDel.text()).toBe("Task 1");
+    expect(wrapper.vm.listTodo[0].status).toBe(true);
+  });
+
+  it("Xóa 1 todo task", async () => {
+    const listBtnRemove = wrapper.find("[data-label='btnRemove']");
+    listBtnRemove.trigger("click");
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.listTodo).toHaveLength(1);
   });
 });

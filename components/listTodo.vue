@@ -129,6 +129,7 @@
               @click="handleDone(todo.id)"
               :disabled="todo.status"
               severity="success"
+              data-label="btnDone"
             />
             <Button
               class="ml-2"
@@ -145,6 +146,7 @@
               rounded
               @click="handleRemove(todo.id)"
               severity="danger"
+              data-label="btnRemove"
             />
           </div>
         </li>
