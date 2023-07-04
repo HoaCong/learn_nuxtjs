@@ -18,7 +18,4 @@ export default defineNuxtConfig({
   build: {
     transpile: ["primevue"],
   },
-  experimental: {
-    inlineSSRStyles: (id) => !id?.includes("entry"),
-  },
 });
