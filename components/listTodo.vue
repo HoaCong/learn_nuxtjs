@@ -18,7 +18,7 @@
       <InputButton
         v-model="newTodo.name"
         placeholder="Name task"
-        :handleActions="handleAdd"
+        :handleActions="handleAddOrEdit"
         :label="newTodo.id !== '' ? 'Edit' : 'Add'"
         :class="{ 'w-full': true, 'p-invalid': error.status }"
         ariaDescribedby="text-error"
@@ -52,7 +52,7 @@
 
         <Button
           :label="newTodo.id !== '' ? 'Edit' : 'Add'"
-          @click="handleAdd(value)"
+          @click="handleAddOrEdit(value)"
         />
       </div>
       <small class="p-error" id="text-error">{{ error.message }}</small>
@@ -238,9 +238,10 @@ export default defineComponent({
       this.listId = [];
       this.isSubmit = false;
     },
-    handleAdd() {
+    handleAddOrEdit() {
       this.listSearch = [];
       this.isSubmit = true;
+      this.isEmptyData = false;
       const result = this.addOrUpTodo(this.newTodo.name);
       const tmp = this.newTodo.name;
       this.error = {
