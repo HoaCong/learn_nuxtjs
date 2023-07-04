@@ -164,7 +164,6 @@ import InputText from "primevue/inputtext";
 import { defineComponent } from "vue";
 import { todoStore } from "../store";
 import { getListTodo } from "../utils";
-import { log } from "console";
 
 export default defineComponent({
   data() {
@@ -314,8 +313,8 @@ export default defineComponent({
         value: "",
         message: "",
       };
+      this.isSubmit = false;
       this.refresh();
-      console.log(this.error);
     },
   },
 });
