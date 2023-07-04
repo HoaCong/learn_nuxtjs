@@ -39,7 +39,8 @@
 
     <div class="mb-4">
       <div class="flex justify-content-between">
-        <span class="p-float-label flex-grow-1">
+        <span class="p-float-label flex-grow-1 p-input-icon-right">
+          <i class="pi pi-refresh" id="refresh" @click="handleRefresh()" />
           <InputText
             class="w-full"
             :class="{ 'p-invalid': error.status }"
@@ -51,6 +52,7 @@
         </span>
 
         <Button
+          :severity="newTodo.id !== '' && 'warning'"
           :label="newTodo.id !== '' ? 'Edit' : 'Add'"
           @click="handleAddOrEdit(value)"
         />
@@ -162,6 +164,7 @@ import InputText from "primevue/inputtext";
 import { defineComponent } from "vue";
 import { todoStore } from "../store";
 import { getListTodo } from "../utils";
+import { log } from "console";
 
 export default defineComponent({
   data() {
@@ -228,6 +231,7 @@ export default defineComponent({
       "removeTodo",
       "doneAll",
       "removeAll",
+      "refresh",
     ]),
     searchTodo(name) {
       const tmp = [...this.list].filter((todo) =>
@@ -303,6 +307,15 @@ export default defineComponent({
       this.removeAll(this.listId);
       this.listId = [];
       this.keyword = "";
+    },
+    handleRefresh() {
+      this.error = {
+        status: false,
+        value: "",
+        message: "",
+      };
+      this.refresh();
+      console.log(this.error);
     },
   },
 });

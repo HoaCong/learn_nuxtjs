@@ -14,6 +14,9 @@ export const todoStore = defineStore("todoStore", {
     initialList(tmpList: Array<todoObject>) {
       this.list = tmpList;
     },
+    refresh() {
+      this.newTodo = { id: "", name: "", status: false };
+    },
     addOrUpTodo(name: string) {
       const isExist = this.list.findIndex(
         (item: todoObject) => item.name === name
