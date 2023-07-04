@@ -129,6 +129,7 @@ describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
     const btnAdd = wrapper.find('[label="Add"]');
     const btnRefresh = wrapper.find("#refresh");
 
+    // Trường hợp thêm với empty string
     inputAdd.setValue("");
     btnAdd.trigger("click");
     expect(wrapper.vm.error.message).toBe("Tên task không được trống");
@@ -136,6 +137,7 @@ describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
     expect(wrapper.vm.newTodo.id).toBe("");
     expect(wrapper.vm.error.message).toBe("");
 
+    // Trường hợp thêm với empty string
     inputAdd.setValue("Task 1");
     btnAdd.trigger("click");
     expect(wrapper.vm.error.message).toBe("Task này đã tồn tại");
@@ -164,6 +166,8 @@ describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
     expect(wrapper.vm.newTodo.id).toBe("");
     expect(wrapper.vm.error.message).toBe("");
 
+    listBtnEdit.trigger("click");
+    await wrapper.vm.$nextTick();
     inputAdd.setValue("Task 2");
     btnEdit.trigger("click");
     expect(wrapper.vm.error.message).toBe("Task này đã tồn tại");
@@ -171,6 +175,8 @@ describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
     expect(wrapper.vm.newTodo.id).toBe("");
     expect(wrapper.vm.error.message).toBe("");
 
+    listBtnEdit.trigger("click");
+    await wrapper.vm.$nextTick();
     inputAdd.setValue("Task 3");
     btnEdit.trigger("click");
     expect(wrapper.vm.listTodo[0].name).toBe("Task 3");
