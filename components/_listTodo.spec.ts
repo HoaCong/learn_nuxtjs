@@ -127,10 +127,21 @@ describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
   it("Thêm dữ liệu", async () => {
     const inputAdd = wrapper.findComponent('[placeholder="Name task"]');
     const btnAdd = wrapper.find('[label="Add"]');
+    const btnRefresh = wrapper.find("#refresh");
+
+    inputAdd.setValue("");
+    btnAdd.trigger("click");
+    expect(wrapper.vm.error.message).toBe("Tên task không được trống");
+    btnRefresh.trigger("click");
+    expect(wrapper.vm.newTodo.id).toBe("");
+    expect(wrapper.vm.error.message).toBe("");
 
     inputAdd.setValue("Task 1");
     btnAdd.trigger("click");
     expect(wrapper.vm.error.message).toBe("Task này đã tồn tại");
+    btnRefresh.trigger("click");
+    expect(wrapper.vm.newTodo.id).toBe("");
+    expect(wrapper.vm.error.message).toBe("");
 
     inputAdd.setValue("Task 3");
     btnAdd.trigger("click");
@@ -138,20 +149,27 @@ describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
   });
 
   it("Chỉnh sửa dữ liệu", async () => {
+    const inputAdd = wrapper.findComponent('[placeholder="Name task"]');
+    const btnEdit = wrapper.find('[label="Edit"]');
+    const btnRefresh = wrapper.find("#refresh");
+
     const listBtnEdit = wrapper.find("[data-label='btnEdit']");
     listBtnEdit.trigger("click");
     await wrapper.vm.$nextTick();
 
-    const inputAdd = wrapper.findComponent('[placeholder="Name task"]');
-    const btnEdit = wrapper.find('[label="Edit"]');
-
     inputAdd.setValue("");
     btnEdit.trigger("click");
     expect(wrapper.vm.error.message).toBe("Tên task không được trống");
+    btnRefresh.trigger("click");
+    expect(wrapper.vm.newTodo.id).toBe("");
+    expect(wrapper.vm.error.message).toBe("");
 
     inputAdd.setValue("Task 2");
     btnEdit.trigger("click");
     expect(wrapper.vm.error.message).toBe("Task này đã tồn tại");
+    btnRefresh.trigger("click");
+    expect(wrapper.vm.newTodo.id).toBe("");
+    expect(wrapper.vm.error.message).toBe("");
 
     inputAdd.setValue("Task 3");
     btnEdit.trigger("click");
