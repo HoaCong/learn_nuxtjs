@@ -27,6 +27,7 @@ describe("Header", () => {
     const aboutLink = wrapper.find("#about");
     const todoLink = wrapper.find("#todo");
 
+    expect(wrapper.text()).toContain("MENT");
     expect(aboutLink.classes()).toContain("text-blue-500");
     expect(todoLink.classes()).not.toContain("text-blue-500");
     wrapper.unmount();
