@@ -16,6 +16,9 @@ export default defineNuxtConfig({
     "primeicons/primeicons.css",
   ],
   build: {
-    transpile: ["primevue", "primeicons"],
+    transpile: ["primevue"],
+  },
+  experimental: {
+    inlineSSRStyles: (id) => !id?.includes("entry"),
   },
 });
