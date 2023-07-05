@@ -151,13 +151,15 @@ describe("TodoList khởi tạo với 2 phần tử ở localStorage", () => {
   });
 
   it("Chỉnh sửa dữ liệu", async () => {
+    const listBtnEdit = wrapper.find("[data-label='btnEdit']");
+    listBtnEdit.trigger("click");
+    await wrapper.vm.$nextTick();
+
     const inputAdd = wrapper.findComponent('[placeholder="Name task"]');
     const btnEdit = wrapper.find('[label="Edit"]');
     const btnRefresh = wrapper.find("#refresh");
 
-    const listBtnEdit = wrapper.find("[data-label='btnEdit']");
-    listBtnEdit.trigger("click");
-    await wrapper.vm.$nextTick();
+
 
     inputAdd.setValue("");
     btnEdit.trigger("click");
