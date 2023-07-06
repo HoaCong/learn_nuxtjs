@@ -1,3 +1,1 @@
-import { getListTodo } from "./helperTodo";
-
-export { getListTodo };
+export * from "./helperTodo";
