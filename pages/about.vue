@@ -1,1 +1,1 @@
-<template>About</template>
+<template><VeeCOM /></template>
